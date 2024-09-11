@@ -31,10 +31,7 @@ module.exports = {
                   label: 'Heading 4 (H4)'
                 }
               ],
-              insert: [
-                'table',
-                'image'
-              ]
+              insert: [ 'table', 'image' ]
             },
             '@apostrophecms/image': {},
             '@apostrophecms/video': {},
@@ -47,6 +44,6 @@ module.exports = {
       basics: {
         fields: [ 'title', 'publishedAt', 'main' ]
       }
-    }  
+    }
   }
 };
