@@ -1,6 +1,9 @@
 import { defineConfig } from 'astro/config';
 import node from '@astrojs/node';
 import apostrophe from '@apostrophecms/apostrophe-astro';
+import { loadEnv } from "vite";
+
+const { APOS_HOST } = loadEnv(process.env.APOS_HOST, process.cwd(), "http://localhost:3000");
 
 export default defineConfig({
   output: 'server',
@@ -9,12 +12,12 @@ export default defineConfig({
   }),
   integrations: [
     apostrophe({
-      aposHost: 'http://localhost:3000',
+      aposHost: APOS_HOST,
       widgetsMapping: './src/widgets',
       templatesMapping: './src/templates',
       forwardHeaders: [
-        'content-security-policy', 
-        'strict-transport-security', 
+        'content-security-policy',
+        'strict-transport-security',
         'x-frame-options',
         'referrer-policy',
         'cache-control',
