@@ -38,7 +38,7 @@ services:
       context: ./frontend
     container_name: "frondtend-container"
     ports:
-      - "1234:1234"
+      - "80:80"
     environment:
       - NODE_ENV
       - APOS_EXTERNAL_FRONT_KEY
