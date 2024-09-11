@@ -1,0 +1,54 @@
+networks:
+  main_net:
+    ipam:
+      config:
+        - subnet: 192.168.77.0/24
+
+services:
+  db:
+    image: mongo:4.4.14
+    command: mongod --port 27018 --bind_ip_all
+    expose:
+      - 27018
+    volumes:
+      - /data/db
+    networks:
+      main_net:
+        ipv4_address: 192.168.77.6
+  cms:
+    build:
+      context: ./cms
+    container_name: "cms-container"
+    expose:
+      - 3000
+    environment:
+      - NODE_ENV
+      - APOS_MONGODB_URI
+      - APOS_CLUSTER_PROCESSES
+      - APOS_EXTERNAL_FRONT_KEY
+    depends_on:
+      - db
+    volumes:
+      - /srv/www/apostrophe/public/uploads
+    networks:
+      main_net:
+        ipv4_address: 192.168.77.5
+  frontend:
+    image: node:lts-alpine3.20
+    container_name: "frondtend-container"
+    working_dir: /app
+    command: sh -c "npm ci; npm run dev"
+    volumes:
+      - ./frontend:/app
+      - ./node_modules:/app/node_modules
+    ports:
+      - 4321:4321
+    environment:
+      - NODE_ENV
+      - APOS_EXTERNAL_FRONT_KEY
+      - APOS_HOST
+    depends_on:
+      - db
+    networks:
+      main_net:
+        ipv4_address: 192.168.77.14
